@@ -14,3 +14,18 @@ export async function addPet(pet) {
       throw error;
     }
   }
+
+  // CRUD Operation: Read
+// RESTful Operation: Retrieve a resource (get a pet by ID)
+// Example URL: /pets/{id}
+// HTTP Method: GET
+
+export async function getPetById(id) {
+    try {
+      const response = await axios.get(`/pets/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error retrieving pet:', error);
+      throw error;
+    }
+  }

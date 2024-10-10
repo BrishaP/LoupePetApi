@@ -1,6 +1,6 @@
 import { describe, expect, test, jest } from '@jest/globals';
 import axios from 'axios';
-import { addPet } from '../../src/api/petAPI';
+import { addPet, getPetById} from '../../src/api/petAPI';
 
 //mocking the axios library to simulate hrrp requests (as we aren't making actual network calls)
 jest.mock('axios');
@@ -64,5 +64,79 @@ describe('Pet API', () => {
       expect(error.response.data.message).toBe('Bad Request');
     }
     expect(axios.post).toHaveBeenCalledWith('/pets', newPet);
+  });
+
+   // CRUD Operation: Read
+  // RESTful Operation: Retrieve a resource (get a pet by ID)
+  // Example URL: /pets/{id}
+  // HTTP Method: GET
+
+  //Test case: successful get request by ID
+  test('GETs a pet by id and returns the pet data', async () => {
+    // Arrange
+    const petId = 12;
+    const petData = { id: 12, name: 'test', status: 'available' };
+    axios.get.mockResolvedValue({ data: petData });
+
+    // Act
+    const result = await getPetById(petId);
+
+    // Assert
+    expect(result).toEqual(petData);
+    expect(axios.get).toHaveBeenCalledWith(`/pets/${petId}`);
+  });
+
+   // Test case: Pet not found (Pet with an ID not in database)
+   test('should handle pet not found error', async () => {
+    // Arrange
+    const petId = 999;
+    const errorResponse = {
+      response: {
+        status: 404,
+        data: { message: 'Pet not found' }
+      }
+    };
+    axios.get.mockRejectedValue(errorResponse);
+
+    // Act & Assert
+    try {
+        await getPetById(petId);
+      } catch (error) {
+        expect(error.response.data.message).toBe('Pet not found');
+      }
+      expect(axios.get).toHaveBeenCalledWith(`/pets/${petId}`);
+    });
+  
+    // Test case: Network error 
+    test('should handle network error when retrieving a pet', async () => {
+      // Arrange
+      const petId = 12;
+      const errorMessage = 'Network Error';
+      axios.get.mockRejectedValue(new Error(errorMessage));
+  
+      // Act & Assert
+      await expect(getPetById(petId)).rejects.toThrow(errorMessage);
+      expect(axios.get).toHaveBeenCalledWith(`/pets/${petId}`);
+    });
+  
+    // Test case: Invalid ID
+test('should handle invalid ID error', async () => {
+    // Arrange
+    const invalidId = 'invalid-id';
+    const errorResponse = {
+      response: {
+        status: 400,
+        data: { message: 'Invalid ID' }
+      }
+    };
+    axios.get.mockRejectedValue(errorResponse);
+  
+    // Act & Assert
+    try {
+      await getPetById(invalidId);
+    } catch (error) {
+      expect(error.response.data.message).toBe('Invalid ID');
+    }
+    expect(axios.get).toHaveBeenCalledWith(`/pets/${invalidId}`);
   });
 });
