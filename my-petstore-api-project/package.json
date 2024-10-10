@@ -1,0 +1,21 @@
+{
+  "name": "my-petstore-api-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@jest/globals": "^29.7.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.7"
+  }
+}
