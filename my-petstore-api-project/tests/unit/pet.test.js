@@ -1,6 +1,6 @@
 import { describe, expect, test, jest } from '@jest/globals';
 import axios from 'axios';
-import { addPet, getPetById} from '../../src/api/petAPI';
+import { addPet, getPetById, updatePetById} from '../../src/api/petAPI';
 
 //mocking the axios library to simulate hrrp requests (as we aren't making actual network calls)
 jest.mock('axios');
@@ -139,4 +139,102 @@ test('should handle invalid ID error', async () => {
     }
     expect(axios.get).toHaveBeenCalledWith(`/pets/${invalidId}`);
   });
+
+// CRUD Operation: Update
+  // RESTful Operation: Update an existing resource (update a pet)
+  // Example URL: /pets/{id}
+  // HTTP Method: PUT or PATCH
+  test('PUTs and updates a pet by id and returns the updated pet data', async () => {
+    // Arrange
+    const petId = 12;
+    const updatedPet = { id: 12, name: 'updatedTest', status: 'available' };
+    axios.put.mockResolvedValue({ data: updatedPet });
+
+    // Act
+    const result = await updatePetById(petId, updatedPet);
+
+    // Assert
+    expect(result).toEqual(updatedPet);
+    expect(axios.put).toHaveBeenCalledWith(`/pets/${petId}`, updatedPet);
+  });
+
+  // Edge case: Network error
+  test('should handle network error when updating a pet', async () => {
+    // Arrange
+    const petId = 12;
+    const updatedPet = { id: 12, name: 'updatedTest', status: 'available' };
+    const errorMessage = 'Network Error';
+    axios.put.mockRejectedValue(new Error(errorMessage));
+
+    // Act & Assert
+    await expect(updatePetById(petId, updatedPet)).rejects.toThrow(errorMessage);
+    expect(axios.put).toHaveBeenCalledWith(`/pets/${petId}`, updatedPet);
+  });
+
+  // Edge case: Pet not found
+  test('should handle pet not found error when updating a pet', async () => {
+    // Arrange
+    const petId = 999;
+    const updatedPet = { id: 999, name: 'updatedTest', status: 'available' };
+    const errorResponse = {
+      response: {
+        status: 404,
+        data: { message: 'Pet not found' }
+      }
+    };
+    axios.put.mockRejectedValue(errorResponse);
+
+    // Act & Assert
+    try {
+      await updatePetById(petId, updatedPet);
+    } catch (error) {
+      expect(error.response.data.message).toBe('Pet not found');
+    }
+    expect(axios.put).toHaveBeenCalledWith(`/pets/${petId}`, updatedPet);
+  });
+
+  // Edge case: Invalid ID
+  test('should handle invalid ID error when updating a pet', async () => {
+    // Arrange
+    const invalidId = 'invalid-id';
+    const updatedPet = { id: 'invalid-id', name: 'updatedTest', status: 'available' };
+    const errorResponse = {
+      response: {
+        status: 400,
+        data: { message: 'Invalid ID' }
+      }
+    };
+    axios.put.mockRejectedValue(errorResponse);
+
+    // Act & Assert
+    try {
+        await updatePetById(invalidId, updatedPet);
+      } catch (error) {
+        expect(error.response.data.message).toBe('Invalid ID');
+      }
+      expect(axios.put).toHaveBeenCalledWith(`/pets/${invalidId}`, updatedPet);
+    });
+  
+    // Edge case: Validation error
+    test('should handle validation error when updating a pet', async () => {
+      // Arrange
+      const petId = 12;
+      const updatedPet = { id: 12, name: '', status: 'available' }; // Invalid name
+      const errorResponse = {
+        response: {
+          status: 400,
+          data: { message: 'Validation Error: Name is required' }
+        }
+      };
+      axios.put.mockRejectedValue(errorResponse);
+  
+      // Act & Assert
+      try {
+        await updatePetById(petId, updatedPet);
+      } catch (error) {
+        expect(error.response.data.message).toBe('Validation Error: Name is required');
+      }
+      expect(axios.put).toHaveBeenCalledWith(`/pets/${petId}`, updatedPet);
+    });
+
 });

@@ -29,3 +29,18 @@ export async function getPetById(id) {
       throw error;
     }
   }
+
+// CRUD Operation: Update
+// RESTful Operation: Update an existing resource (update a pet)
+// Example URL: /pets/{id}
+// HTTP Method: PUT or PATCH
+
+export async function updatePetById(id, pet) {
+    try {
+      const response = await axios.put(`/pets/${id}`, pet);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating pet:', error);
+      throw error;
+    }
+  }
