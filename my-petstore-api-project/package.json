@@ -2,6 +2,7 @@
   "name": "my-petstore-api-project",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "directories": {
     "test": "tests"
   },
@@ -13,7 +14,12 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "@jest/globals": "^29.7.0"
+    "@babel/core": "^7.25.7",
+    "@babel/preset-env": "^7.25.7",
+    "@jest/globals": "^29.7.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5"
   },
   "dependencies": {
     "axios": "^1.7.7"
