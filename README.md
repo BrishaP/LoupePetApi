@@ -4,7 +4,9 @@
 
 This project is a response to a technical exercise designed to showcase my ability to work independently, follow best practices, and create automated tests in alignment with software quality standards. The goal is to demonstrate my ability to build **API functions** and implement **automated testing frameworks** with a focus on reliability and maintainability.
 
-The project implements **CRUD operations** for a pet management API (from the example provided in the [Petstore API documentation](https://petstoresampleapi.apimatic.dev/)). I used **JavaScript** to develop the API functions and **Jest** for automated testing, ensuring coverage for creating, retrieving, updating, and deleting resources. The tests simulate real-world scenarios while validating error handling and edge cases.
+The project implements **CRUD operations** for a pet management API (from the example provided in the Petstore API documentation). I used **JavaScript** to develop the API functions and **Jest** for automated testing, ensuring coverage for creating, retrieving, updating, and deleting resources. The tests simulate real-world scenarios by **mocking HTTP requests** using **Axios**, while validating error handling and edge cases.
+
+Since the current implementation relies on a **sample API server** (without a real backend), no actual HTTP requests are made. Instead, **Axios** is used to simulate these requests in a controlled test environment.
 
 In future iterations, I plan to integrate a more robust backend using **Express** and **Mongoose** with **MongoDB** for persistent data storage. This will allow me to implement end-to-end testing with tools like **Supertest**, while setting up a **CI/CD pipeline** to automate testing and deployment.
 
@@ -14,33 +16,33 @@ This project demonstrates my ability to:
 - Implement and maintain automated testing frameworks, ensuring reliability and correctness.
 - Manage and test edge cases and error handling.
 
-
 ## Features
 
-- Full **CRUD** functionality for managing pet records.
-- **Axios** used to simulate HTTP requests within the API functions.
+- Simulated CRUD functionality for managing pet records using mocked HTTP requests.
+- **Axios** used to simulate HTTP requests in the tests.
 - Unit tests implemented using **Jest**, covering success cases and various error handling scenarios.
 - Follows the **Arrange-Act-Assert** pattern in testing for clarity and reliability.
 
 ## Tech Stack
 
 - **Node.js**: JavaScript runtime for building server-side applications.
-- **Axios**: HTTP client for making requests to API endpoints.
+- **Axios**: Used to simulate HTTP requests for testing purposes.
 - **Jest**: Testing framework for writing unit tests.
 - **ESModules**: Used for modern JavaScript module import/export.
 
 ## Current Functionality
 
-1. **API Functions**:
-    - **POST /pets**: Add a new pet to the system.
-    - **GET /pets/{id}**: Retrieve a pet by its ID.
-    - **PUT /pets/{id}**: Update the details of a pet.
-    - **DELETE /pets/{id}**: Delete a pet from the system.
-   
-2. **Tests**:
-    - Comprehensive tests for each CRUD operation using **Jest**.
-    - Mocked **Axios** calls to simulate HTTP requests in the unit tests.
-    - Test cases handle successful operations, network errors, validation errors, and edge cases like invalid IDs.
+### API Functions:
+- **POST /pets**: Simulate adding a new pet to the system.
+- **GET /pets/{id}**: Simulate retrieving a pet by its ID.
+- **PUT /pets/{id}**: Simulate updating the details of a pet.
+- **DELETE /pets/{id}**: Simulate deleting a pet from the system.
+
+### Tests:
+- Comprehensive tests for each CRUD operation using **Jest**.
+- Mocked **Axios** calls to simulate HTTP requests in the unit tests.
+- Test cases handle successful operations, network errors, validation errors, and edge cases like invalid IDs.
+
 
 ## Installation
 
