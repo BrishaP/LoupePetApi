@@ -44,3 +44,18 @@ export async function updatePetById(id, pet) {
       throw error;
     }
   }
+
+  // CRUD Operation: Delete
+// RESTful Operation: Delete an existing resource (delete a pet)
+// Example URL: /pets/{id}
+// HTTP Method: DELETE
+
+export async function deletePetById(id) {
+    try {
+      const response = await axios.delete(`/pets/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting pet:', error);
+      throw error;
+    }
+  }

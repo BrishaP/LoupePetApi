@@ -1,6 +1,6 @@
 import { describe, expect, test, jest } from '@jest/globals';
 import axios from 'axios';
-import { addPet, getPetById, updatePetById} from '../../src/api/petAPI';
+import { addPet, getPetById, updatePetById, deletePetById} from '../../src/api/petAPI';
 
 //mocking the axios library to simulate hrrp requests (as we aren't making actual network calls)
 jest.mock('axios');
@@ -237,4 +237,74 @@ test('should handle invalid ID error', async () => {
       expect(axios.put).toHaveBeenCalledWith(`/pets/${petId}`, updatedPet);
     });
 
+    // CRUD Operation: Delete
+  // RESTful Operation: Delete an existing resource (delete a pet)
+  // Example URL: /pets/{id}
+  // HTTP Method: DELETE
+  test('DELETEs a pet by id and returns a success message', async () => {
+    // Arrange
+    const petId = 12;
+    axios.delete.mockResolvedValue({ data: {} });
+
+    // Act
+    const result = await deletePetById(petId);
+
+    // Assert
+    expect(result).toEqual({});
+    expect(axios.delete).toHaveBeenCalledWith(`/pets/${petId}`);
+  });
+
+  // Edge case: Network error
+  test('should handle network error when deleting a pet', async () => {
+    // Arrange
+    const petId = 12;
+    const errorMessage = 'Network Error';
+    axios.delete.mockRejectedValue(new Error(errorMessage));
+
+    // Act & Assert
+    await expect(deletePetById(petId)).rejects.toThrow(errorMessage);
+    expect(axios.delete).toHaveBeenCalledWith(`/pets/${petId}`);
+  });
+
+// Edge case: Pet not found
+test('should handle pet not found error when deleting a pet', async () => {
+    // Arrange
+    const petId = 999;
+    const errorResponse = {
+      response: {
+        status: 404,
+        data: { message: 'Pet not found' }
+      }
+    };
+    axios.delete.mockRejectedValue(errorResponse);
+
+    // Act & Assert
+    try {
+      await deletePetById(petId);
+    } catch (error) {
+      expect(error.response.data.message).toBe('Pet not found');
+    }
+    expect(axios.delete).toHaveBeenCalledWith(`/pets/${petId}`);
+  });
+
+  // Edge case: Invalid ID
+  test('should handle invalid ID error when deleting a pet', async () => {
+    // Arrange
+    const invalidId = 'invalid-id';
+    const errorResponse = {
+      response: {
+        status: 400,
+        data: { message: 'Invalid ID' }
+      }
+    };
+    axios.delete.mockRejectedValue(errorResponse);
+
+    // Act & Assert
+    try {
+      await deletePetById(invalidId);
+    } catch (error) {
+      expect(error.response.data.message).toBe('Invalid ID');
+    }
+    expect(axios.delete).toHaveBeenCalledWith(`/pets/${invalidId}`);
+  });  
 });
