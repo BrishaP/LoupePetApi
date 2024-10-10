@@ -2,9 +2,18 @@
 
 ## Overview
 
-This project demonstrates my understanding of building API functions for managing pets. It includes automated tests using **Jest** to verify the correctness of the CRUD operations.
+This project is a response to a technical exercise designed to showcase my ability to work independently, follow best practices, and create automated tests in alignment with software quality standards. The goal is to demonstrate my ability to build **API functions** and implement **automated testing frameworks** with a focus on reliability and maintainability.
 
-While the current implementation focuses on API functions and unit tests, I plan to integrate an **Express** server and **Mongoose** for persistent storage in future iterations.
+The project implements **CRUD operations** for a pet management API (from the example provided in the [Petstore API documentation](https://petstoresampleapi.apimatic.dev/)). I used **JavaScript** to develop the API functions and **Jest** for automated testing, ensuring coverage for creating, retrieving, updating, and deleting resources. The tests simulate real-world scenarios while validating error handling and edge cases.
+
+In future iterations, I plan to integrate a more robust backend using **Express** and **Mongoose** with **MongoDB** for persistent data storage. This will allow me to implement end-to-end testing with tools like **Supertest**, while setting up a **CI/CD pipeline** to automate testing and deployment.
+
+This project demonstrates my ability to:
+
+- Write clean, modular code for API functions.
+- Implement and maintain automated testing frameworks, ensuring reliability and correctness.
+- Manage and test edge cases and error handling.
+
 
 ## Features
 
